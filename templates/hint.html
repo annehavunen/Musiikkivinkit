@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block title %}Vinkki{% endblock %}
+{% block content %}
+
+<p><b>Säveltäjä tai esittäjä:</b><br>
+{{ composer }}</p>
+<p><b>Kappaleen nimi:</b><br>
+{{ name }}</p>
+<b>Vaihtoehtoiset kutsumanimet, esittäjät ym.:</b>
+<p style="white-space: pre-line">{{ alternatives }}</p>
+<p><b>Ehdotetut linkit:</b><br>
+<a href={{ link1 }}>{{ link1 }}</a><br>
+<a href={{ link2 }}>{{ link2 }}</a><br>
+<a href={{ link3 }}>{{ link3 }}</a></p>
+
+Liitetty seuraaviin kategorioihin:<br>
+<b>Vihkiminen</b><br>
+Musiikin paikka tilaisuudessa:<br>
+<ul>
+  {% for place in wed_places %}
+  <li>{{ place[0] }}<br>
+  {% endfor %}
+</ul>
+Musiikkityyli:<br>
+<ul>
+  {% for style in wed_styles %}
+  <li>{{ style[0] }}<br>
+  {% endfor %}
+</ul>
+
+<b>Hautaan siunaaminen</b><br>
+Musiikin paikka tilaisuudessa:<br>
+<ul>
+  {% for place in fun_places %}
+  <li>{{ place[0] }}<br>
+  {% endfor %}
+</ul>
+Musiikkityyli:<br>
+<ul>
+  {% for style in fun_styles %}
+  <li>{{ style[0] }}<br>
+  {% endfor %}
+</ul>
+
+Vinkkiä on muokattu viimeksi {{ sent_at }}<br>
+(Vinkin tunniste on {{ id }}.)<br></p>
+{% endblock %}

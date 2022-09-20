@@ -1,0 +1,141 @@
+{% extends "layout.html" %}
+{% block title %}Lisää vinkki{% endblock %}
+{% block content %}
+{% if session.username %}
+
+<h2>Lisää vinkki</h2>
+<form action="/confirm_new" method="POST" onsubmit="return check(this)">
+  <label for="composer">Säveltäjä tai esittäjä: *</label><br>
+  <input type="text" name="composer" size="65"><br>
+  <label for="name">Kappaleen nimi: *</label><br>
+  <input type="text" name="name" size="65"><br>
+  <label for="alternatives">Kappaleen vaihtoehtoiset kutsumanimet, esittäjät ym.:</label><br>
+  <textarea name="alternatives" rows="3" cols="50"></textarea><br>
+  <label for="link">Verkko-osoite esim. äänitallenteeseen tai nuottimateriaaliin:</label><br>
+  <textarea name="link1" rows="2" cols="50"></textarea><br>
+  <textarea name="link2" rows="2" cols="50"></textarea><br>
+  <textarea name="link3" rows="2" cols="50"></textarea><br>
+
+  <p>Kappaleen voi sijoittaa häihin, hautajaisiin tai molempiin.<br>
+  Valitse haluamastasi tilaisuudesta vähintään yksi paikka musiikille ja tyylilaji.<br>
+  <i>Älä valitse mitään siitä tilaisuudesta, mihin et sijoita kappaletta.</i></p>
+  <div class="tabs">
+    <input type="radio" id="tabwedding" name="tabs" checked="checked">
+    <label for="tabwedding">Häät</label>
+    <div class="tab">
+      <h2>Häät</h2>
+      <p><label for="place">Musiikin paikka tilaisuudessa: *</label><br>
+      Valitse vähintään yksi.<br>
+      <input type="checkbox" name="place1" value="1">Häämarssi<br>
+      <input type="checkbox" name="place1" value="2">Vihkilaulu tai muu soitinmusiikki<br>
+      <input type="checkbox" name="place1" value="3">Virsi tai muu yhteislaulu</p>
+      <p><label for="style">Musiikkityyli: *</label><br>
+      Valitse vähintään yksi.<br>
+      <input type="checkbox" name="style1" value="1">Klassinen musiikki<br>
+      <input type="checkbox" name="style1" value="2">Populäärimusiikki<br>
+      <input type="checkbox" name="style1" value="3">Hengelliset laulut<br>
+      <input type="checkbox" name="style1" value="4">Virret</p>
+    </div>
+   
+    <input type="radio" id="tabfuneral" name="tabs">
+    <label for="tabfuneral">Hautajaiset</label>
+    <div class="tab">
+      <h2>Hautajaiset</h2>
+      <p><label for="place">Musiikin paikka tilaisuudessa: *</label><br>
+      Valitse vähintään yksi.<br>
+      <input type="checkbox" name="place2" value="1">Alku- tai loppumusiikki<br>
+      <input type="checkbox" name="place2" value="2">Siunauslaulu tai muu soitinmusiikki<br>
+      <input type="checkbox" name="place2" value="3">Virsi tai muu yhteislaulu</p>
+      <p><label for="style">Musiikkityyli: *</label><br>
+      Valitse vähintään yksi.<br>
+      <input type="checkbox" name="style2" value="1">Klassinen musiikki<br>
+      <input type="checkbox" name="style2" value="2">Populäärimusiikki<br>
+      <input type="checkbox" name="style2" value="3">Hengelliset laulut<br>
+      <input type="checkbox" name="style2" value="4">Virret</p>
+    </div>
+  </div>
+  <input type="submit" value="Luo vinkki">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+</form>
+<form action="/cancel" method="POST">
+  <input type="submit" value="Peruuta">
+</form>
+
+<script>
+  function check(form) {
+    if (!form.composer.value) {
+      alert("Lisää säveltäjä tai esittäjä.");
+      return false;
+    }
+    if (form.composer.value.length > 100) {
+      alert("Säveltäjän/esittäjän nimi on liian pitkä.");
+      return false;
+    }
+    if (!form.name.value) {
+      alert("Lisää kappaleen nimi.");
+      return false;
+    }
+    if (form.name.value.length > 150) {
+      alert("Kappaleen nimi on liian pitkä.");
+      return false;
+    }
+    if (form.alternatives.value.length > 1000) {
+      alert("Vaihtoehtoisissa tiedoissa on liikaa merkkejä.");
+      return false;
+    }
+    if (form.link1.value.length > 300 || form.link2.value.length > 300 | form.link3.value.length > 300) {
+      alert("Verkko-osoitteessa on liikaa merkkejä.");
+      return false;
+    }
+
+    var result = document.getElementsByName('place1');
+    var places1 = [];
+    for (var i = 0; i < result.length; i++) {
+      if (result[i].checked) {
+        places1.push(result[i].value);
+      }
+    }
+    var result = document.getElementsByName('style1');
+    var styles1 = [];
+    for (var i = 0; i < result.length; i++) {
+      if (result[i].checked) {
+        styles1.push(result[i].value);
+      }
+    }
+    var result = document.getElementsByName('place2');
+    var places2 = [];
+    for (var i = 0; i < result.length; i++) {
+      if (result[i].checked) {
+        places2.push(result[i].value);
+      }
+    }
+    var result = document.getElementsByName('style2');
+    var styles2 = [];
+    for (var i = 0; i < result.length; i++) {
+      if (result[i].checked) {
+        styles2.push(result[i].value);
+      }
+    }
+
+    if (places1.length == 0 && styles1.length == 0 && places2.length == 0 && styles2.length == 0) {
+      alert("Valitse kappaleelle kategoriat.");
+      return false;
+    }
+    if ((places1.length >= 1 && styles1.length == 0) || (places1.length == 0 && styles1.length >= 1)) {
+      alert("Tarkista kappaleen kategoriat.");
+      return false;
+    }
+    if ((places2.length >= 1 && styles2.length == 0) || (places2.length == 0 && styles2.length >= 1)) {
+      alert("Tarkista kappaleen kategoriat.");
+      return false;
+    }
+
+    return true;
+  }
+</script>
+
+{% else %}
+Vain rekisteröityneet käyttäjät voivat lisätä vinkin.<br>
+Voit siirtyä kirjautumaan <a href="/loginpage">tästä</a>.
+{% endif %}
+{% endblock %}

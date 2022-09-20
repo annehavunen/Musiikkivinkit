@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block title %}Profiili{% endblock %}
+{% block content %}
+{% if admin %}
+
+<div class="profile-container">
+  <div class="sidenav">
+    <b>Oma profiili</b><br>
+    {{ session.username }} 
+    <nav>        
+      <a href="/logout">Kirjaudu ulos</a><br>
+      <a href="/change_password">Vaihda salasana</a><br>
+      {% if admin %}
+        <a href="/propositions">Vinkkiehdotukset
+        {% if number > 0 %}
+          ({{ number }})
+        {% endif %}
+        </a><br>
+      {% endif %}
+    </nav>
+  </div>
+  <div class="textarea">
+    <h2>Vinkkiehdotukset</h2>
+    <div class="tabs">
+      <input type="radio" id="tabnew" name="tabs" checked="checked">
+      <label for="tabnew">Uudet 
+      {% if number1 > 0 %}
+        ({{ number1 }})
+      {% endif %}
+      </label>
+      <div class="tab">
+        <h2>Ehdotetut musiikkivinkit</h2>
+        <table>
+          <tr>
+            <th>Kappaleen nimi</th>
+            <th>Säveltäjä tai esittäjä</th>
+          </tr>
+          {% for hint in new_hints %}
+          <tr>
+            <td><a href={{ hint[2] }}>{{ hint[0] }}</a></td>
+            <td>{{ hint[1] }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+      <input type="radio" id="tabchange" name="tabs">
+      <label for="tabchange">Muutokset</label>
+      <div class="tab">
+        <h2>Ehdotetut muutokset</h2>
+        <table>
+          <tr>
+            <th>Kappaleen nimi</th>
+            <th>Säveltäjä tai esittäjä</th>
+          </tr>
+        </table>
+      </div>
+
+      <input type="radio" id="tabremove" name="tabs">
+      <label for="tabremove">Poistot</label>
+      <div class="tab">
+        <h2>Ehdotetut poistot</h2>
+        <table>
+          <tr>
+            <th>Kappaleen nimi</th>
+            <th>Säveltäjä tai esittäjä</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

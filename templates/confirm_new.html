@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block title %}Luo vinkki{% endblock %}
+{% block content %}
+
+<p>Vahvista vielä musiikkivinkin lähetys.</p>
+<p><b>Säveltäjän tai esittäjän nimi</b><br>
+{{ composer }}</p>
+<p><b>Kappaleen nimi</b><br>
+{{ name }}</p>
+
+<b>Vaihtoehtoiset kutsumanimet, esittäjät ym.:</b>
+<p style="white-space: pre-line">{{ alternatives }}</p>
+
+<p><b>Verkko-osoitteet</b><br>
+{{ link1 }}<br>
+{{ link2 }}<br>
+{{ link3 }}</p>
+<p>Liitetty seuraaviin kategorioihin:<br>
+<b>Vihkiminen</b><br>
+Musiikin paikka tilaisuudessa:<br>
+<ul>
+  {% for place in wed_places %}
+  <li>{{ place[0] }}<br>
+  {% endfor %}
+</ul>
+Musiikkityyli:<br>
+<ul>    
+  {% for style in wed_styles %}
+  <li>{{ style[0] }}<br>
+  {% endfor %}
+  </ul>
+<b>Hautaan siunaaminen</b><br>
+Musiikin paikka tilaisuudessa:<br>
+<ul>
+  {% for place in fun_places %}
+  <li>{{ place[0] }}<br>
+  {% endfor %}
+</ul>
+Musiikkityyli:<br>
+<ul>
+  {% for style in fun_styles %}
+  <li>{{ style[0] }}<br>
+  {% endfor %}</p>
+</ul>
+
+<form action="/save_hint_suggestion" method="POST">
+  <input type="hidden" name="composer" value="{{ composer }}">
+  <input type="hidden" name="name" value="{{ name }}">
+  <input type="hidden" name="alternatives" value="{{ alternatives }}">
+  <input type="hidden" name="link1" value={{ link1 }}>
+  <input type="hidden" name="link2" value={{ link2 }}>
+  <input type="hidden" name="link3" value={{ link3 }}>
+  <input type="hidden" name="places1" value="{{ places1 }}">
+  <input type="hidden" name="styles1" value="{{ styles1 }}">
+  <input type="hidden" name="places2" value="{{ places2 }}">
+  <input type="hidden" name="styles2" value="{{ styles2 }}">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+  <input type="submit" value="Vahvista">
+</form>
+<form action="/cancel" method="POST">
+  <input type="submit" value="Peruuta">
+</form>
+
+{% endblock %}

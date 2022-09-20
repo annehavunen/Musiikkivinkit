@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Kirjautuminen{% endblock %}
+{% block content %}
+<h2>Kirjautuminen</h2>
+
+<p style="color:red;">{{ error }}</p>
+<form name="form" action="/register" method="POST" onsubmit="return check()">
+  Tunnus: <input type="text" name="username">
+  <p>
+  Salasana: <input type="password" name="password1"><br>
+  Salasana uudestaan: <input type="password" name="password2"><br>
+  <input type="submit" value="Luo tunnus"></p>
+</form>
+
+<script>
+  function check() {  
+    if (document.forms["form"]["username"].value == "") {
+      alert("Lisää käyttäjätunnus.");
+      return false;
+    }
+    if (document.forms["form"]["username"].value.length > 100) {
+      alert("Käyttäjätunnus on liian pitkä.");
+      return false;
+    }
+    if (document.forms["form"]["password1"].value != document.forms["form"]["password2"].value) {
+      alert("Salasanat eivät täsmää.");
+      return false;
+    }
+    if (document.forms["form"]["password1"].value == "") {
+      alert("Lisää salasana.");
+      return false;
+    }
+    if (document.forms["form"]["password1"].value.length > 200) {
+      alert("Salasana on liian pitkä.");
+      return false;
+    }
+    return true;
+  }
+</script>
+
+{% endblock %}

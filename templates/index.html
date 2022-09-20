@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}Etusivu{% endblock %}
+{% block content %}
+
+<p> Tervetuloa selaamaan musiikki-ideoita kirkollisiin häihin ja hautajaisiin!</p>
+<p> Sivustolta löytyy vinkkejä musiikkien valintaan, mutta lopullisen päätöksen musiikeista tekee yleensä tilaisuuden kanttori.<br>
+Tarkemmat sivuston käytäneet löydät <a href="/customs"> täältä</a>.</p>
+
+<h2>Uusimmat lisäykset</h2>
+<table>
+  <tr>
+    <th>Kappaleen nimi</th>
+    <th>Säveltäjä tai esittäjä</th>
+  </tr>
+  {% for hint in latest %}
+  <tr>
+    <td><a href={{ hint[2] }}>{{ hint[0] }}</a></td>
+    <td>{{ hint[1] }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

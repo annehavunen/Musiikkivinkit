@@ -1,0 +1,104 @@
+.sitename { grid-area: sitename; }
+.profilesearch { grid-area: profilesearch; }
+.header { grid-area: header; }
+.main { grid-area: main; }
+.footer { grid-area: footer; }
+
+.sidenav { grid-area: sidenav; }
+.textarea { grid-area: textarea; }
+
+.grid-container {
+    display: grid;
+    grid-template-areas:
+      'sitename profilesearch' 
+      'header header'
+      'main main'
+      'footer footer';
+    gap: 15px;
+    padding:10px;
+}
+
+.sitename a {
+    font-size: 2em;
+    text-decoration: none;
+    color: black;
+}
+
+.profile-container {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-areas:
+    'sidenav textarea';
+}
+
+body [style="white-space: pre-line"] {
+  margin-top: 0%;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 600px;
+}
+
+.tabs input[type="radio"] {
+  display: none;
+}
+
+.tabs label[for=tabwedding] {
+  padding: 20px;
+  font-weight: bold;
+}
+
+.tabs label[for=tabfuneral] {
+  padding: 20px;
+  font-weight: bold;
+}
+
+.tabs label[for=tabnew] {
+  padding: 20px;
+  font-weight: bold;
+}
+
+.tabs label[for=tabchange] {
+  padding: 20px;
+  font-weight: bold;
+}
+
+.tabs label[for=tabremove] {
+  padding: 20px;
+  font-weight: bold;
+}
+
+.tabs .tab {
+  width: 100%;
+  padding: 20px;
+  background: white;
+  order: 1;
+  display: none;
+}
+.tabs .tab h2 {
+  font-size: 1.5em;
+}
+
+.tabs input[type='radio']:checked + label + .tab {
+  display: block;
+}
+
+.tabs input[type="radio"]:checked + label {
+  background: lightgrey;
+}
+
+table {
+  text-align: left;
+  width: 70%;
+}
+
+table, th, td {
+  border: 1px solid lightgrey;
+}
+
+table th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="{{ url_for('static',filename='main.css') }}">
+
+<!doctype html>
+<title>Musiikkivinkit - {% block title %}{% endblock %}</title>
+
+<div class="grid-container">
+  <div class="sitename">
+    <a href="/"><b>Musiikkivinkit</b></a>
+  </div>
+  <div class="profilesearch">
+    <form action="/result" method="GET">
+        <input type="text" name="query">
+        <input type="submit" value="Hae">
+        {% if session.username %}
+        <a href="/profile">Profiili</a>
+        {% else %}
+        <a href="/loginpage">Kirjaudu sisään</a>
+        {% endif %}
+    </form>
+  </div>
+  <div class="header">
+    <a href="/">Etusivu</a>
+    <a href="/wedding">Häämusiikki</a>
+    <a href="/funeral">Hautajaismusiikki</a>
+    <a href="/new">Lisää vinkki</a> 
+  </div>
+  <div class="main">
+    {% block content %}{% endblock %}
+  </div>
+  <div class="footer">
+    <hr>
+    <a href="/customs">Sivuston käytänteet</a>
+  </div>
+</div>
+
