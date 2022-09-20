@@ -45,18 +45,6 @@ def get_name_style(style_id):
     category = result.fetchone()
     return category
 
-def get_number_of_suggestions():
-    result = db.session.execute("""
-        SELECT SUM(c) AS total FROM 
-        ((SELECT COUNT(DISTINCT hint_id) AS c FROM New_hint)
-        UNION ALL 
-        (SELECT COUNT(DISTINCT hint_id) AS c FROM Change_hint) 
-        UNION ALL 
-        (SELECT COUNT(*) AS c FROM Remove_hint)) 
-        tables""")
-    number = result.fetchone()[0]
-    return number
-
 def get_new():
     result = db.session.execute("""
         SELECT H.name, H.composer, H.id

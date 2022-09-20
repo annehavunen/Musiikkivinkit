@@ -68,26 +68,24 @@ def page(id):
 @app.route("/profile")
 def profile():
     admin = users.admin()
-    number = hints.get_number_of_suggestions()
+    number = hints.get_number_of_new()
     return render_template("profile.html", admin=admin, number=number)
 
 @app.route("/change_password")
 def change_password():
     admin = users.admin()
-    number = hints.get_number_of_suggestions()
+    number = hints.get_number_of_new()
     return render_template("change_password.html", admin=admin, number=number)
 
 @app.route("/propositions")
 def propositions():
-    # voiko len() muuttaa count?
     admin = users.admin()
-    number = hints.get_number_of_suggestions()
     tuple = hints.get_new()
     new_hints = []
     for id, name, composer in tuple:
         new_hints.append((name, composer, f"/page/new/{id}"))
-    number1 = hints.get_number_of_new()
-    return render_template("propositions.html", admin=admin, number=number, new_hints=new_hints, number1=number1)
+    number = hints.get_number_of_new()
+    return render_template("propositions.html", admin=admin, number=number, new_hints=new_hints)
 
 @app.route("/page/new/<int:id>")
 def page_new(id):
