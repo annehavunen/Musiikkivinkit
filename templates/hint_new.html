@@ -45,7 +45,7 @@ Musiikkityyli:<br>
 </ul>
 
 Vinkkiä on muokattu viimeksi {{ sent_at }}<br>
-(Vinkin tunniste on {{ id }}.)<br></p>
+(Vinkin tunniste on {{ hint_id }}.)<br></p>
 <form action="/save_new" method="POST">
   <input type="hidden" name="hint_id" value={{ hint_id }}>
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">

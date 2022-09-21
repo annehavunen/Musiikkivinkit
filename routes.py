@@ -61,7 +61,7 @@ def page(id):
     wed_styles = hints.get_hint_styles(hint_id, 1)
     fun_places = hints.get_hint_places(hint_id, 2)
     fun_styles = hints.get_hint_styles(hint_id, 2)
-    return render_template("hint.html", id=id, name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
+    return render_template("hint.html", hint_id=hint_id, name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
             link1=hint.link1, link2=hint.link2, link3=hint.link3, sent_at=hint.sent_at.strftime("%d.%m.%Y %H:%M"),
             wed_places=wed_places, wed_styles=wed_styles, fun_places=fun_places, fun_styles=fun_styles)
 
