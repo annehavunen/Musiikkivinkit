@@ -27,6 +27,5 @@ Musiikkivinkkejä voi selata ilman kirjautumista.
 - kirjautunut käyttäjä voi ehdottaa muutoksia vinkkiin tai sen poistamista
 - kirjautunut käyttäjä voi vaihtaa salasanan
 - ylläpitäjä voi hyväksyä tai hylätä ehdotetut muutos- tai poistoehdotukset
-- lisäksi ulkoasun parantamista
-
+- ulkoasun parantamista
 
