@@ -22,10 +22,16 @@ Musiikkivinkkejä voi selata ilman kirjautumista.
 ## Sovelluksen suunnitteilla olevia ominaisuuksia
 
 - musiikkivinkkejä voi hakea sanahaulla
-- musiikkivinkkejä selatessa voi tarkentaa, mikä on musiikin paikka tilaisuudessa tai musiikkityyli
+- musiikkivinkkejä selatessa voi tarkentaa, mikä on musiikin paikka tilaisuudessa ja musiikkityyli
 - musiikkivinkit voi järjestää päiväyksen, säveltäjän nimen tai kappaleen nimen mukaan
 - kirjautunut käyttäjä voi ehdottaa muutoksia vinkkiin tai sen poistamista
 - kirjautunut käyttäjä voi vaihtaa salasanan
 - ylläpitäjä voi hyväksyä tai hylätä ehdotetut muutos- tai poistoehdotukset
-- ulkoasun parantamista
+- ulkoasun parantamista ja selkeyttämistä
 
+## Sovelluksen testaaminen Herokussa
+
+- sovellusta voi testata [Herokussa](https://musiikkivinkit.herokuapp.com)
+- jotkin ominaisuudet vaativat ylläpitäjän oikeuksia. Testataksesi ominaisuuksia syötä kirjautuessa (ei-niin-salaisesti):
+  - Tunnus: ylläpitäjä
+  - Salasana: ylläpito
