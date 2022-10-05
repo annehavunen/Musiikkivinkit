@@ -6,7 +6,6 @@
 <p>Tee haluamasi muutokset tai vinkin poistaminen. Ehdotus lähetetään ylläpitäjien hyväksyttäväksi.</p>
 
 <h2>Vinkin muuttaminen:</h2>
-(Vinkin id-numero: {{ hint_id }})<br>
 <form name="form" action="/confirm_change" method="POST" onsubmit="return check()">
   <label for="new_composer">Säveltäjä tai esittäjä:</label><br>
   <input type="text" name="new_composer" value="{{ composer }}" size="50"><br>

@@ -127,7 +127,7 @@ def page_new(id):
     fun_places = hints.get_new_places(hint_id, 2)
     fun_styles = hints.get_new_styles(hint_id, 2)
     return render_template("hint_new.html", 
-            admin=admin, hint_id=hint_id, name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
+            hint_id=hint_id, admin=admin, name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
             link1=hint.link1, link2=hint.link2, link3=hint.link3,
             sent_at=hint.sent_at.strftime("%d.%m.%Y %H:%M"),
             wed_places=wed_places, wed_styles=wed_styles, fun_places=fun_places, fun_styles=fun_styles)
@@ -144,7 +144,7 @@ def page_change(id):
     fun_places = hints.get_changed_places(hint_id, 2)    
     fun_styles = hints.get_changed_styles(hint_id, 2)
     return render_template("hint_change.html", 
-            admin=admin, hint_id=hint_id, name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
+            hint_id=hint_id, admin=admin, name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
             link1=hint.link1, link2=hint.link2, link3=hint.link3, sent_at=hint.sent_at.strftime("%d.%m.%Y %H:%M"),
             wed_places=wed_places, wed_styles=wed_styles, fun_places=fun_places, fun_styles=fun_styles, current_hint=current_hint)
 
@@ -158,8 +158,8 @@ def page_remove(id):
     wed_styles = hints.get_style_names(hint_id, 1)
     fun_places = hints.get_place_names(hint_id, 2)
     fun_styles = hints.get_style_names(hint_id, 2)
-    return render_template("hint_remove.html", admin=admin, remove_id=remove_id, hint_id=hint_id,
-            name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
+    return render_template("hint_remove.html", 
+            hint_id=hint_id, admin=admin, name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
             link1=hint.link1, link2=hint.link2, link3=hint.link3, sent_at=hint.sent_at.strftime("%d.%m.%Y %H:%M"),
             wed_places=wed_places, wed_styles=wed_styles, fun_places=fun_places, fun_styles=fun_styles, reason=reason)
 

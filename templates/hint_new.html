@@ -43,9 +43,8 @@ Musiikkityyli:<br>
   <li>{{ style[0] }}<br>
   {% endfor %}
 </ul>
+<p>Vinkkiä on muokattu viimeksi {{ sent_at }}.</p>
 
-Vinkkiä on muokattu viimeksi {{ sent_at }}<br>
-(Vinkin tunniste on {{ hint_id }}.)<br></p>
 <form action="/accept_new" method="POST">
   <input type="hidden" name="hint_id" value={{ hint_id }}>
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
