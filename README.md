@@ -7,31 +7,33 @@ Musiikkivinkkejä voi selata ilman kirjautumista.
 **Kirjautumaton käyttäjä voi**
 
 - selata musiikkivinkkejä
+- tarkentaa selatessa, mikä on musiikin paikka tilaisuudessa ja musiikkityyli
+- järjestää musiikkivinkit päiväyksen, säveltäjän nimen tai kappaleen nimen mukaan
+- hakea musiikkivinkkejä sanahaulla
 
 **Kirjautunut käyttäjä voi**
 
 - tehdä edellä mainitut
 - ehdottaa uutta musiikkivinkkiä
+- ehdottaa musiikkivinkin muuttamista
+- ehdottaa musiikkivinkin poistamista
+- vaihtaa salasanan
 - katsoa profiilia
 
 **Ylläpitäjä voi**
 
 - tehdä edellä mainitut
-- hyväksyä tai hylätä ehdotetut vinkit
+- hyväksyä tai hylätä ehdotetut vinkit, muutokset tai poistot
 
 ## Sovelluksen suunnitteilla olevia ominaisuuksia
 
-- musiikkivinkkejä voi hakea sanahaulla
-- musiikkivinkkejä selatessa voi tarkentaa, mikä on musiikin paikka tilaisuudessa ja musiikkityyli
-- musiikkivinkit voi järjestää päiväyksen, säveltäjän nimen tai kappaleen nimen mukaan
-- kirjautunut käyttäjä voi ehdottaa muutoksia vinkkiin tai sen poistamista
-- kirjautunut käyttäjä voi vaihtaa salasanan
-- ylläpitäjä voi hyväksyä tai hylätä ehdotetut muutos- tai poistoehdotukset
-- ulkoasun parantamista ja selkeyttämistä
+- salasanalle on tarkemmat kriteerit
+- ulkoasun parantamista
+  - erityisesti yksittäisten musiikkivinkkien ulkoasun selkeyttämistä
 
 ## Sovelluksen testaaminen Herokussa
 
 - sovellusta voi testata [Herokussa](https://musiikkivinkit.herokuapp.com)
-- vinkkien hyväksyminen tai hylkääminen vaatii ylläpitäjän oikeuksia. Testataksesi ominaisuuksia syötä kirjautuessa (ei-niin-salaisesti):
+- vinkkiehdotusten hyväksyminen tai hylkääminen vaatii ylläpitäjän oikeudet. Testataksesi ominaisuuksia syötä kirjautuessa (ei-niin-salaisesti):
   - Tunnus: ylläpitäjä
   - Salasana: ylläpito
