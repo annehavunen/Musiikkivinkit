@@ -51,6 +51,39 @@ body [style="white-space: pre-line"] {
     'sidenav textarea';
 }
 
+.profilesearch a {
+  text-decoration: none;
+  color: black;
+  background: rgba(0, 128, 0, 0.3);
+  padding: 5px;
+}
+
+.header a {
+  font-size: large;
+  text-decoration: none;
+  color: black;
+  background: rgba(0, 128, 0, 0.3);
+  padding: 5px;
+}
+
+.header a:hover {
+  color: blue;
+}
+
+.profilesearch {
+  text-align: right;
+}
+
+.sidenav a {
+  text-decoration: none;
+  color: black;
+}
+
+.footer a {
+  text-decoration: none;
+  color: black;
+}
+
 .tabs {
   display: flex;
   flex-wrap: wrap;
@@ -102,7 +135,7 @@ body [style="white-space: pre-line"] {
 }
 
 .tabs input[type="radio"]:checked + label {
-  background: lightgrey;
+  background: rgba(0, 128, 0, 0.2);
 }
 
 table {
@@ -121,7 +154,7 @@ table th {
 
 .tabplace label {
   display: inline-block;
-  background-color: gainsboro;
+  background-color: whitesmoke;
   padding: 4px;
 }
 
@@ -135,7 +168,7 @@ table th {
 
 .tabstyle label {
   display: inline-block;
-  background-color: whitesmoke;
+  background: rgba(0, 128, 0, 0.1);
   padding: 4px;
 }
 
