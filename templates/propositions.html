@@ -24,9 +24,9 @@
     <div class="tabs">
       <input type="radio" id="tabnew" name="tabs" checked="checked">
       <label for="tabnew">Uudet 
-      {% if number > 0 %}
-        ({{ number }})
-      {% endif %}
+        {% if number_new > 0 %}
+          ({{ number_new }})
+        {% endif %}
       </label>
       <div class="tab">
         <h2>Ehdotetut musiikkivinkit</h2>
@@ -45,7 +45,11 @@
       </div>
 
       <input type="radio" id="tabchange" name="tabs">
-      <label for="tabchange">Muutokset</label>
+      <label for="tabchange">Muutokset
+        {% if number_change > 0 %}
+          ({{ number_change }})
+        {% endif %}
+      </label>
       <div class="tab">
         <h2>Ehdotetut muutokset</h2>
         <table>
@@ -53,22 +57,38 @@
             <th>Kappaleen nimi</th>
             <th>Säveltäjä tai esittäjä</th>
           </tr>
+          {% for hint in change_hints %}
+          <tr>
+            <td><a href={{ hint[2] }}>{{ hint[0] }}</a></td>
+            <td>{{ hint[1] }}</td>
+          </tr>
+          {% endfor %}
         </table>
       </div>
 
       <input type="radio" id="tabremove" name="tabs">
-      <label for="tabremove">Poistot</label>
+      <label for="tabremove">Poistot
+        {% if number_remove > 0 %}
+          ({{ number_remove }})
+        {% endif %}
+      </label>
       <div class="tab">
         <h2>Ehdotetut poistot</h2>
+        Huom. vinkin poistaminen poistaa siihen mahdollisesti liittyvät muutosehdotukset.<br>
         <table>
           <tr>
             <th>Kappaleen nimi</th>
             <th>Säveltäjä tai esittäjä</th>
           </tr>
+          {% for hint in remove_hints %}
+          <tr>
+            <td><a href={{ hint[2] }}>{{ hint[0] }}</a></td>
+            <td>{{ hint[1] }}</td>
+          </tr>
+          {% endfor %}
         </table>
       </div>
     </div>
-
   </div>
 </div>
 {% endif %}

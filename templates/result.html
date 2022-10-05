@@ -1,7 +1,19 @@
 {% extends "layout.html" %}
-{% block title %}Hakutulokset{% endblock %}
+{% block title %}Haku{% endblock %}
 {% block content %}
 
 <h2>Hakutulokset</h2>
+<table>
+  <tr>
+    <th>Kappaleen nimi</th>
+    <th>Säveltäjä tai esittäjä</th>
+  </tr>
+  {% for hint in result %}
+  <tr>
+    <td><a href={{ hint[2] }}>{{ hint[0] }}</a></td>
+    <td>{{ hint[1] }}</td>
+  </tr>
+  {% endfor %}
+</table>
 
 {% endblock %}

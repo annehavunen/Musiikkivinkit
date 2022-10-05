@@ -31,11 +31,25 @@ CREATE TABLE Categories (
     style_id INTEGER REFERENCES Style
 );
 
-CREATE TABLE New_hint (
+CREATE TABLE New_suggestion (
     hint_id INTEGER REFERENCES Hint,
     occasion_id INTEGER REFERENCES Occasion,
     place_id INTEGER REFERENCES Place,
     style_id INTEGER REFERENCES Style
+);
+
+CREATE TABLE Change_suggestion (
+    old_id INTEGER,
+    hint_id INTEGER REFERENCES Hint,
+    occasion_id INTEGER REFERENCES Occasion,
+    place_id INTEGER REFERENCES Place,
+    style_id INTEGER REFERENCES Style
+);
+
+CREATE TABLE Remove_suggestion (
+    id SERIAL PRIMARY KEY,
+    hint_id INTEGER REFERENCES Hint,
+    reason TEXT
 );
 
 CREATE TABLE Users (

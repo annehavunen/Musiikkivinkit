@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+{% block title %}Muokkaa{% endblock %}
+{% block content %}
+{% if session.username %}
+
+<h3>Ehdottamasi muutokset:</h3>
+(Vinkin id-numero: {{ hint_id }})<br>
+<p><b>Säveltäjän tai esittäjän nimi:</b><br>
+{{ composer }}</p>
+<p><b>Kappaleen nimi:</b><br>
+{{ name }}</p>
+<p><b>Kappaleen vaihtoehtoiset kutsumanimet, esittäjät ym.:</b><br>
+<p style="white-space: pre-line">{{ alternatives }}</p>
+<p><b>Verkko-osoite esim. äänitallenteeseen tai nuottia myyvälle sivustolle:</b><br>
+<a href={{ link1 }}>{{ link1 }}</a><br>
+<a href={{ link2 }}>{{ link2 }}</a><br>
+<a href={{ link3 }}>{{ link3 }}</a></p>
+
+<p><b>Liitetty seuraaviin kategorioihin:</b><br>
+<b>Vihkiminen</b><br>
+Musiikin paikka tilaisuudessa:<br>
+<ul>
+  {% for place in wed_places %}
+  <li>{{ place[0] }}<br>
+  {% endfor %}
+</ul>
+Musiikkityyli:<br>
+<ul>    
+  {% for style in wed_styles %}
+  <li>{{ style[0] }}<br>
+  {% endfor %}
+</ul>
+<b>Hautaan siunaaminen</b><br>
+Musiikin paikka tilaisuudessa:<br>
+<ul>
+  {% for place in fun_places %}
+  <li>{{ place[0] }}<br>
+  {% endfor %}
+</ul>
+Musiikkityyli:<br>
+<ul>
+  {% for style in fun_styles %}
+  <li>{{ style[0] }}<br>
+  {% endfor %}</p>
+</ul>
+
+<form action="/save_change_suggestion" method="POST">
+  <input type="hidden" name="composer" value='{{ composer }}'>
+  <input type="hidden" name="name" value='{{ name }}'>
+  <input type="hidden" name="alternatives" value='{{ alternatives }}'>
+  <input type="hidden" name="link1" value='{{ link1 }}'>
+  <input type="hidden" name="link2" value='{{ link2 }}'>
+  <input type="hidden" name="link3" value='{{ link3 }}'>
+  <input type="hidden" name="places1" value='{{ places1 }}'>
+  <input type="hidden" name="styles1" value='{{ styles1 }}'>  
+  <input type="hidden" name="places2" value='{{ places2 }}'> 
+  <input type="hidden" name="styles2" value='{{ styles2 }}'> 
+  <input type="hidden" name="hint_id" value={{ hint_id }}>
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+  <input type="submit" value="Vahvista muutokset">
+</form>
+
+<form action="/cancel" method="POST">
+  <input type="submit" value="Peruuta">
+</form>
+
+{% endif %}
+{% endblock %}

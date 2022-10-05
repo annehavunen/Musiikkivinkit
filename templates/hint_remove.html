@@ -1,21 +1,23 @@
 {% extends "layout.html" %}
-{% block title %}Vinkkiehdotus{% endblock %}
+{% block title %}Poistoehdotus{% endblock %}
 {% block content %}
 {% if admin %}
 
-<h2>Ehdotettu musiikkivinkki</h2>
+<h2>Ehdotettu poistettava musiikkivinkki.</h2>
 <p><b>Säveltäjä tai esittäjä:</b><br>
-{{ composer }}</p>
+{{ composer }}
+</p>
 <p><b>Kappaleen nimi:</b><br>
 {{ name }}</p>
 <b>Vaihtoehtoiset kutsumanimet, esittäjät ym.:</b>
 <p style="white-space: pre-line">{{ alternatives }}</p>
+
 <p><b>Ehdotetut linkit:</b><br>
 <a href={{ link1 }}>{{ link1 }}</a><br>
 <a href={{ link2 }}>{{ link2 }}</a><br>
 <a href={{ link3 }}>{{ link3 }}</a></p>
 
-Liitetty seuraaviin kategorioihin:<br>
+<p>Liitetty seuraaviin kategorioihin:<br>
 <b>Vihkiminen</b><br>
 Musiikin paikka tilaisuudessa:<br>
 <ul>
@@ -24,12 +26,11 @@ Musiikin paikka tilaisuudessa:<br>
   {% endfor %}
 </ul>
 Musiikkityyli:<br>
-<ul>
+<ul>    
   {% for style in wed_styles %}
   <li>{{ style[0] }}<br>
   {% endfor %}
 </ul>
-
 <b>Hautaan siunaaminen</b><br>
 Musiikin paikka tilaisuudessa:<br>
 <ul>
@@ -41,22 +42,27 @@ Musiikkityyli:<br>
 <ul>
   {% for style in fun_styles %}
   <li>{{ style[0] }}<br>
-  {% endfor %}
+  {% endfor %}</p>
 </ul>
 
 Vinkkiä on muokattu viimeksi {{ sent_at }}<br>
-(Vinkin tunniste on {{ hint_id }}.)<br></p>
-<form action="/accept_new" method="POST">
+Vinkin tunniste on {{ hint_id }}.<br>
+(Poistoehdotuksen tunniste on {{ remove_id }}.)<br>
+
+<p>
+<b>Poistamisen syy:</b><br>
+<p style="white-space: pre-line">{{ reason }}</p>
+Huom. vinkin poistaminen poistaa myös siihen mahdollisesti liittyvät muutosehdotukset.<br>
+<form action="/accept_remove" method="POST">
   <input type="hidden" name="hint_id" value={{ hint_id }}>
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
   <input type="submit" value="Hyväksy">
 </form>
-<form action="/reject_new" method="POST">
+<form action="/reject_remove" method="POST">
   <input type="hidden" name="hint_id" value={{ hint_id }}>
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
   <input type="submit" value="Hylkää">
 </form>
 </p>
-
 {% endif %}
 {% endblock %}

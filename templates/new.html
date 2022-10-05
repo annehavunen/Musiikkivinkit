@@ -75,15 +75,15 @@
       alert("Lisää kappaleen nimi.");
       return false;
     }
-    if (form.name.value.length > 150) {
+    if (form.name.value.length > 100) {
       alert("Kappaleen nimi on liian pitkä.");
       return false;
     }
-    if (form.alternatives.value.length > 1000) {
+    if (form.alternatives.value.length > 500) {
       alert("Vaihtoehtoisissa tiedoissa on liikaa merkkejä.");
       return false;
     }
-    if (form.link1.value.length > 300 || form.link2.value.length > 300 | form.link3.value.length > 300) {
+    if (form.link1.value.length > 200 || form.link2.value.length > 200 | form.link3.value.length > 200) {
       alert("Verkko-osoitteessa on liikaa merkkejä.");
       return false;
     }
@@ -135,7 +135,7 @@
 </script>
 
 {% else %}
-Vain rekisteröityneet käyttäjät voivat lisätä vinkin.<br>
+Vain rekisteröityneet käyttäjät voivat ehdottaa uutta vinkkiä.<br>
 Voit siirtyä kirjautumaan <a href="/loginpage">tästä</a>.
 {% endif %}
 {% endblock %}

@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}Poista vinkki{% endblock %}
+{% block content %}
+{% if session.username %}
+
+<h3>Olet ehdottamassa seuraavan musiikkivinkin poistamista.</h3>
+{{ composer }}, {{ name }}<br>
+<p><b>Poistamisen perustelu:</b><br>
+<p style="white-space: pre-line">{{ reason }}</p>
+<p>(Vinkin id-numero: {{ hint_id }})</p>
+
+Vahvista poistaminen:<br>
+<form action="/save_remove_suggestion" method="POST">
+    <input type="hidden" name="hint_id" value={{ hint_id }}>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <input type="hidden" name="reason" value='{{ reason }}'>    
+    <input type="submit" value="Lähetä poistamisehdotus">
+</form>
+<form action="/cancel" method="POST">
+    <input type="submit" value="Peruuta">
+</form>
+
+{% endif %}
+{% endblock %}

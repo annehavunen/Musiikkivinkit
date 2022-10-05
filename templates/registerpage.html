@@ -18,7 +18,7 @@
       alert("Lisää käyttäjätunnus.");
       return false;
     }
-    if (document.forms["form"]["username"].value.length > 100) {
+    if (document.forms["form"]["username"].value.length > 50) {
       alert("Käyttäjätunnus on liian pitkä.");
       return false;
     }
@@ -30,7 +30,7 @@
       alert("Lisää salasana.");
       return false;
     }
-    if (document.forms["form"]["password1"].value.length > 200) {
+    if (document.forms["form"]["password1"].value.length > 100) {
       alert("Salasana on liian pitkä.");
       return false;
     }

@@ -44,4 +44,8 @@ Musiikkityyli:<br>
 
 Vinkkiä on muokattu viimeksi {{ sent_at }}<br>
 (Vinkin tunniste on {{ hint_id }}.)<br></p>
+<form action="/change" method="POST">
+  <input type="hidden" name="hint_id" value={{ hint_id }}>
+  <input type="submit" value="Muokkaa tai poista">
+</form>
 {% endblock %}
