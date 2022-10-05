@@ -7,6 +7,19 @@
 .sidenav { grid-area: sidenav; }
 .textarea { grid-area: textarea; }
 
+.sorthints { grid-area: sorthints; }
+.tabplace{ grid-area: tabplace; }
+.tabstyle{ grid-area: tabstyle; }
+
+body {
+  margin: 25px;
+  max-width: 65em;
+}
+
+body [style="white-space: pre-line"] {
+  margin-top: 0%;
+}
+
 .grid-container {
     display: grid;
     grid-template-areas:
@@ -16,6 +29,13 @@
       'footer footer';
     gap: 15px;
     padding:10px;
+}
+
+.sort-container {
+  display: grid;
+  grid-template-areas:
+    'tabplace sorthints'
+    'tabstyle tabstyle';
 }
 
 .sitename a {
@@ -29,10 +49,6 @@
   grid-template-columns: 1fr 3fr;
   grid-template-areas:
     'sidenav textarea';
-}
-
-body [style="white-space: pre-line"] {
-  margin-top: 0%;
 }
 
 .tabs {
@@ -101,4 +117,32 @@ table, th, td {
 table th {
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+.tabplace label {
+  display: inline-block;
+  background-color: gainsboro;
+  padding: 4px;
+}
+
+.tabplace input[type="radio"] {
+  display:none;   
+}
+
+.tabplace input[type="radio"]:checked + label {
+  border: solid 2px black;
+}
+
+.tabstyle label {
+  display: inline-block;
+  background-color: whitesmoke;
+  padding: 4px;
+}
+
+.tabstyle input[type="radio"] {
+  display:none;   
+}
+
+.tabstyle input[type="radio"]:checked + label {
+  border: solid 2px black;
 }

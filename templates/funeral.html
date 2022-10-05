@@ -3,6 +3,40 @@
 {% block content %}
 
 <h2>Hautaan siunaaminen</h2>
+<form action="/funeral_selected" method="POST">
+  <div class="sort-container">
+
+    <div class="sorthints">
+      <label for="order">Järjestä</label><br>
+      <select name="order" onchange="this.form.submit()">
+        <option value="latest"> Uusimmat ensin
+        <option value="oldest"> Vanhimmat ensin
+        <option value="composer"> Säveltäjä/esittäjä A-Ö
+        <option value="composer_rev"> Säveltäjä/esittäjä Ö-A
+        <option value="name"> Kappaleen nimi A-Ö
+        <option value="name_rev"> Kappaleen nimi Ö-A
+      </select>
+    </div>
+
+    <div class="tabplace">
+      Musiikin paikka tilaisuudessa<br>
+      <input type="radio" id="place1" name="place" value="0" onchange="this.form.submit();" checked><label for="place1">Näytä kaikki</label>
+      <input type="radio" id="place2" name="place" value="1" onchange="this.form.submit();"><label for="place2">Alku- ja loppumusiikit</label>
+      <input type="radio" id="place3" name="place" value="2" onchange="this.form.submit();"><label for="place3">Siunauslaulu ja muu soitinmusiikki</label>
+      <input type="radio" id="place4" name="place" value="3" onchange="this.form.submit();"><label for="place4">Virsi tai muu yhteislaulu</label>
+    </div>
+    
+    <div class="tabstyle">
+      Musiikkityyli<br>
+      <input type="radio" id="place1" name="style" value="0" onchange="this.form.submit();" checked><label for="style1">Näytä kaikki</label>
+      <input type="radio" id="style2" name="style" value="1" onchange="this.form.submit();"><label for="style2">Klassinen musiikki</label>
+      <input type="radio" id="style3" name="style" value="2" onchange="this.form.submit();"><label for="style3">Populäärimusiikki</label>
+      <input type="radio" id="style4" name="style" value="3" onchange="this.form.submit();"><label for="style4">Hengelliset laulut</label>
+      <input type="radio" id="style5" name="style" value="4" onchange="this.form.submit();"><label for="style5">Virret</label>
+    </div>
+  </div>
+</form>
+
 <table>
   <tr>
     <th>Kappaleen nimi</th>

@@ -264,6 +264,19 @@ def get_change_suggestions_by_id(hint_id):
     suggestions = result.fetchall()
     return suggestions
 
+def search(query):
+    result = db.session.execute("""
+        SELECT H.name, H.composer, H.id
+        FROM Hint H, Categories C
+        WHERE H.id = C.hint_id
+        AND (LOWER(name) LIKE LOWER(:query) 
+        OR LOWER(composer) LIKE LOWER(:query) 
+        OR LOWER(alternatives) LIKE LOWER(:query))
+        GROUP BY H.id""",
+        {"query":"%"+query+"%"})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
 def get_occasion_latest(occasion_id):
     result = db.session.execute("""
         SELECT H.id, H.name, H.composer 
@@ -275,15 +288,255 @@ def get_occasion_latest(occasion_id):
     tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
     return tuple
 
-def search(query):
+def get_occasion_oldest(occasion_id):
     result = db.session.execute("""
-        SELECT H.name, H.composer, H.id
-        FROM Hint H, Categories C
-        WHERE H.id = C.hint_id
-        AND (LOWER(name) LIKE LOWER(:query) 
-        OR LOWER(composer) LIKE LOWER(:query) 
-        OR LOWER(alternatives) LIKE LOWER(:query))
-        GROUP BY H.id""",
-        {"query":"%"+query+"%"})
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) 
+        GROUP BY H.id 
+        ORDER BY H.sent_at""",
+        {"occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_occasion_composer(occasion_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) 
+        GROUP BY H.id 
+        ORDER BY H.composer""",
+        {"occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_occasion_composer_reversed(occasion_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) 
+        GROUP BY H.id 
+        ORDER BY H.composer DESC""",
+        {"occasion_id":occasion_id})    
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_occasion_name(occasion_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) 
+        GROUP BY H.id 
+        ORDER BY H.name""",
+        {"occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_occasion_name_reversed(occasion_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id)
+        GROUP BY H.id 
+        ORDER BY H.name DESC""",
+        {"occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_style_latest(occasion_id, style_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.style_id=(:style_id) 
+        GROUP BY H.id 
+        ORDER BY H.sent_at DESC""",
+        {"style_id":style_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_style_oldest(occasion_id, style_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.style_id=(:style_id) 
+        GROUP BY H.id 
+        ORDER BY H.sent_at""",
+        {"style_id":style_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_style_composer(occasion_id, style_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.style_id=(:style_id) 
+        GROUP BY H.id 
+        ORDER BY H.composer""",
+        {"style_id":style_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_style_composer_reversed(occasion_id, style_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.style_id=(:style_id) 
+        GROUP BY H.id 
+        ORDER BY H.composer DESC""",
+        {"style_id":style_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_style_name(occasion_id, style_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.style_id=(:style_id) 
+        GROUP BY H.id 
+        ORDER BY H.name""",
+        {"style_id":style_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_style_name_reversed(occasion_id, style_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.style_id=(:style_id) 
+        GROUP BY H.id 
+        ORDER BY H.name DESC""",
+        {"style_id":style_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_place_latest(occasion_id, place_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.place_id=(:place_id)
+        GROUP BY H.id
+        ORDER BY H.sent_at DESC""", 
+        {"place_id":place_id, "occasion_id":occasion_id}) 
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_place_oldest(occasion_id, place_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.place_id=(:place_id)
+        GROUP BY H.id
+        ORDER BY H.sent_at""", 
+        {"place_id":place_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_place_composer(occasion_id, place_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.place_id=(:place_id)
+        GROUP BY H.id
+        ORDER BY H.composer""", 
+        {"place_id":place_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_place_composer_reversed(occasion_id, place_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.place_id=(:place_id)
+        GROUP BY H.id
+        ORDER BY H.composer DESC""", 
+        {"place_id":place_id, "occasion_id":occasion_id}) 
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_place_name(occasion_id, place_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.place_id=(:place_id)
+        GROUP BY H.id
+        ORDER BY H.name""", 
+        {"place_id":place_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_place_name_reversed(occasion_id, place_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.place_id=(:place_id)
+        GROUP BY H.id)
+        ORDER BY H.name DESC""", 
+        {"place_id":place_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_place_style_latest(occasion_id, place_id, style_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.place_id=(:place_id) AND C.style_id=(:style_id)
+        GROUP BY H.id
+        ORDER BY H.sent_at DESC""", 
+        {"place_id":place_id, "style_id":style_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_place_style_oldest(occasion_id, place_id, style_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.place_id=(:place_id) AND C.style_id=(:style_id)
+        GROUP BY H.id
+        ORDER BY H.sent_at""", 
+        {"place_id":place_id, "style_id":style_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_place_style_composer(occasion_id, place_id, style_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.place_id=(:place_id) AND C.style_id=(:style_id)
+        GROUP BY H.id
+        ORDER BY H.composer""", 
+        {"place_id":place_id, "style_id":style_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_place_style_composer_reversed(occasion_id, place_id, style_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.place_id=(:place_id) AND C.style_id=(:style_id)
+        GROUP BY H.id
+        ORDER BY H.composer DESC""", 
+        {"place_id":place_id, "style_id":style_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_place_style_name(occasion_id, place_id, style_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.place_id=(:place_id) AND C.style_id=(:style_id)
+        GROUP BY H.id
+        ORDER BY H.name""", 
+        {"place_id":place_id, "style_id":style_id, "occasion_id":occasion_id})
+    tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    return tuple
+
+def get_place_style_name_reversed(occasion_id, place_id, style_id):
+    result = db.session.execute("""
+        SELECT H.id, H.name, H.composer 
+        FROM Hint H, Categories C 
+        WHERE H.id=C.hint_id AND C.occasion_id=(:occasion_id) AND C.place_id=(:place_id) AND C.style_id=(:style_id)
+        GROUP BY H.id
+        ORDER BY H.name DESC""", 
+        {"place_id":place_id, "style_id":style_id, "occasion_id":occasion_id})
     tuple = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
     return tuple

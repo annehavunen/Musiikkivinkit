@@ -397,22 +397,6 @@ def reject_remove():
     hints.delete_remove_suggestion(hint_id)
     return redirect("/propositions")
 
-@app.route("/wedding")
-def wedding():
-    tuple = hints.get_occasion_latest(1)
-    weddings = []
-    for id, name, composer in tuple:
-        weddings.append((name, composer, f"/page/{id}"))
-    return render_template("wedding.html", weddings=weddings)
-
-@app.route("/funeral")
-def funeral():
-    tuple = hints.get_occasion_latest(2)
-    funerals = []
-    for id, name, composer in tuple:
-        funerals.append((name, composer, f"/page/{id}"))
-    return render_template("funeral.html", funerals=funerals)
-
 @app.route("/result")
 def result():
     query = request.args["query"]
@@ -429,6 +413,79 @@ def customs():
 @app.route("/cancel", methods=["POST"])
 def cancel():
     return redirect("/")
+@app.route("/wedding")
+def wedding():
+    tuple = hints.get_occasion_latest(1)
+    weddings = []
+    for id, name, composer in tuple:
+        weddings.append((name, composer, f"/page/{id}"))
+    return render_template("wedding.html", weddings=weddings)
+
+@app.route("/wedding_selected", methods=["POST"])
+def wedding_selected():
+    place_id = int(request.form["place"])
+    places = []
+    for i in range(4):
+        if place_id == i:
+            places.append("checked")
+        else:
+            places.append("")
+    style_id = int(request.form["style"])
+    styles = []
+    for i in range(5):
+        if style_id == i:
+            styles.append("checked")
+        else:
+            styles.append("")
+    order = request.form["order"]
+    tuple, number = get_selected_hints(order, place_id, style_id, 1)
+    selected = [] 
+    for i in range(6):
+        if number == i:
+            selected.append("selected")
+        else:
+            selected.append("")
+    selected_hints = []
+    for id, name, composer in tuple:
+        selected_hints.append((name, composer, f"/page/{id}"))
+    return render_template("wedding_selected.html", places=places, styles=styles, selected_hints=selected_hints, selected=selected)
+
+@app.route("/funeral")
+def funeral():
+    tuple = hints.get_occasion_latest(2)
+    funerals = []
+    for id, name, composer in tuple:
+        funerals.append((name, composer, f"/page/{id}"))
+    return render_template("funeral.html", funerals=funerals)
+
+@app.route("/funeral_selected", methods=["POST"])
+def funeral_selected():
+    place_id = int(request.form["place"])
+    places = []
+    for i in range(4):
+        if place_id == i:
+            places.append("checked")
+        else:
+            places.append("")
+    style_id = int(request.form["style"])
+    styles = []
+    for i in range(5):
+        if style_id == i:
+            styles.append("checked")
+        else:
+            styles.append("")
+    order = request.form["order"]
+    tuple, number = get_selected_hints(order, place_id, style_id, 2)
+    selected = [] 
+    for i in range(6):
+        if number == i:
+            selected.append("selected")
+        else:
+            selected.append("")
+    funerals = []
+    for id, name, composer in tuple:
+        funerals.append((name, composer, f"/page/{id}"))
+    return render_template("funeral_selected.html", places=places, styles=styles, funerals=funerals, selected=selected)
 
 def check_input(composer, name, alternatives, link1, link2, link3, places1, styles1, places2, styles2):
     if not composer:
@@ -449,3 +506,84 @@ def check_input(composer, name, alternatives, link1, link2, link3, places1, styl
         return "Tarkista kappaleen kategoriat."
     elif (places2 and not styles2) or (styles2 and not places2):
         return "Tarkista kappaleen kategoriat."
+
+def get_selected_hints(order, place_id, style_id, occasion_id):
+    if place_id == 0:
+        if style_id == 0:
+            if order == "latest":
+                number = 0
+                tuple = hints.get_occasion_latest(occasion_id)
+            elif order == "oldest":
+                number = 1
+                tuple = hints.get_occasion_oldest(occasion_id)
+            elif order == "composer":
+                number = 2
+                tuple = hints.get_occasion_composer(occasion_id)
+            elif order == "composer_rev":
+                number = 3
+                tuple = hints.get_occasion_composer_reversed(occasion_id)
+            elif order == "name":
+                number = 4
+                tuple = hints.get_occasion_name(occasion_id)
+            elif order == "name_rev":
+                number = 5
+                tuple = hints.get_occasion_name_reversed(occasion_id)
+        else:
+            if order == "latest":
+                number = 0
+                tuple = hints.get_style_latest(occasion_id, style_id)
+            elif order == "oldest":
+                number = 1
+                tuple = hints.get_style_oldest(occasion_id, style_id)
+            elif order == "composer":
+                number = 2
+                tuple = hints.get_style_composer(occasion_id, style_id)
+            elif order == "composer_rev":
+                number = 3
+                tuple = hints.get_style_composer_reversed(occasion_id, style_id)
+            elif order == "name":
+                number = 4
+                tuple = hints.get_style_name(occasion_id, style_id)
+            elif order == "name_rev":
+                number = 5
+                tuple = hints.get_style_name_reversed(occasion_id, style_id)
+    else:
+        if style_id == 0:
+            if order == "latest":
+                number = 0
+                tuple = hints.get_place_latest(occasion_id, place_id)
+            elif order == "oldest":
+                number = 1
+                tuple = hints.get_place_oldest(occasion_id, place_id)
+            elif order == "composer":
+                number = 2
+                tuple = hints.get_place_composer(occasion_id, place_id)
+            elif order == "composer_rev":
+                number = 3
+                tuple = hints.get_place_composer_reversed(occasion_id, place_id)
+            elif order == "name":
+                number = 4
+                tuple = hints.get_place_name(occasion_id, place_id)
+            elif order == "name_rev":
+                number = 5
+                tuple = hints.get_place_name_reversed(occasion_id, place_id)
+        else:
+            if order == "latest":
+                number = 0
+                tuple = hints.get_place_style_latest(occasion_id, place_id, style_id)
+            elif order == "oldest":
+                number = 1
+                tuple = hints.get_place_style_oldest(occasion_id, place_id, style_id)
+            elif order == "composer":
+                number = 2
+                tuple = hints.get_place_style_composer(occasion_id, place_id, style_id)
+            elif order == "composer_rev":
+                number = 3
+                tuple = hints.get_place_style_composer_reversed(occasion_id, place_id, style_id)
+            elif order == "name":
+                number = 4
+                tuple = hints.get_place_style_name(occasion_id, place_id, style_id)
+            elif order == "name_rev":
+                number = 5
+                tuple = hints.get_place_style_name_reversed(occasion_id, place_id, style_id)
+    return tuple, number
