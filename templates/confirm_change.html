@@ -3,7 +3,7 @@
 {% block content %}
 {% if session.username %}
 
-<h3>Ehdottamasi muutokset:</h3>
+<h3>Vahvista vielä ehdottamasi muutokset.</h3>
 (Vinkin id-numero: {{ hint_id }})<br>
 <p><b>Säveltäjän tai esittäjän nimi:</b><br>
 {{ composer }}</p>
@@ -52,12 +52,12 @@ Musiikkityyli:<br>
   <input type="hidden" name="link2" value='{{ link2 }}'>
   <input type="hidden" name="link3" value='{{ link3 }}'>
   <input type="hidden" name="places1" value='{{ places1 }}'>
-  <input type="hidden" name="styles1" value='{{ styles1 }}'>  
-  <input type="hidden" name="places2" value='{{ places2 }}'> 
-  <input type="hidden" name="styles2" value='{{ styles2 }}'> 
+  <input type="hidden" name="styles1" value='{{ styles1 }}'>
+  <input type="hidden" name="places2" value='{{ places2 }}'>
+  <input type="hidden" name="styles2" value='{{ styles2 }}'>
   <input type="hidden" name="hint_id" value={{ hint_id }}>
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-  <input type="submit" value="Vahvista muutokset">
+  <input type="submit" value="Vahvista muutosehdotus">
 </form>
 
 <form action="/cancel" method="POST">
