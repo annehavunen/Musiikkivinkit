@@ -5,10 +5,10 @@ import hints, users
 
 @app.route("/")
 def index():
-    tuple = hints.get_latest()
+    elements = hints.get_latest()
     latest = []
-    for id, name, composer in tuple:
-        latest.append((name, composer, f"/page/{id}"))
+    for hint_id, name, composer in elements:
+        latest.append((name, composer, f"/page/{hint_id}"))
     return render_template("index.html", latest=latest)
 
 @app.route("/loginpage")
@@ -21,8 +21,7 @@ def login():
     password = request.form["password"]
     if users.login(username, password):
         return redirect("/")
-    else:
-        return render_template("error.html", error="Väärä tunnus tai salasana")
+    return render_template("error.html", error="Väärä tunnus tai salasana")
 
 @app.route("/logout")
 def logout():
@@ -38,16 +37,19 @@ def register():
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
+    error = ""
     if not username:
-        return render_template("error.html", error="Lisää käyttäjätunnus.")
+        error = "Lisää käyttäjätunnus."
     elif len(username) > 50:
-        return render_template("error.html", error="Käyttäjätunnus on liian pitkä.")
+        error = "Käyttäjätunnus on liian pitkä."
     elif password1 != password2:
-        return render_template("error.html", error="Salasanat eroavat.")
+        error = "Salasanat eroavat."
     elif not password1:
-        return render_template("error.html", error="Lisää salasana.")
+        error = "Lisää salasana."
     elif len(password1) > 100:
-        return render_template("error.html", error="Salasana on liian pitkä.")
+        error = "Salasana on liian pitkä."
+    if error:
+        return render_template("error.html", error=error)
     if users.register(username, password1):
         return redirect("/")
     return render_template("registerpage.html", error="Käyttäjätunnus on jo käytössä.")
@@ -60,9 +62,12 @@ def page(id):
     wed_styles = hints.get_hint_styles(hint_id, 1)
     fun_places = hints.get_hint_places(hint_id, 2)
     fun_styles = hints.get_hint_styles(hint_id, 2)
-    return render_template("hint.html", hint_id=hint_id, name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
-            link1=hint.link1, link2=hint.link2, link3=hint.link3, sent_at=hint.sent_at.strftime("%d.%m.%Y %H:%M"),
-            wed_places=wed_places, wed_styles=wed_styles, fun_places=fun_places, fun_styles=fun_styles)
+    return render_template("hint.html", hint_id=hint_id, name=hint.name,
+                           composer=hint.composer, alternatives=hint.alternatives,
+                           link1=hint.link1, link2=hint.link2, link3=hint.link3,
+                           sent_at=hint.sent_at.strftime("%d.%m.%Y %H:%M"),
+                           wed_places=wed_places, wed_styles=wed_styles,
+                           fun_places=fun_places, fun_styles=fun_styles)
 
 @app.route("/profile")
 def profile():
@@ -82,14 +87,17 @@ def save_password():
     password = request.form["password"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
+    error = ""
     if not password:
-        return render_template("error.html", error="Kirjoita nykyinen salasana.")
+        error = "Kirjoita nykyinen salasana."
     elif password1 != password2:
-        return render_template("error.html", error="Salasanat eroavat.")
+        error = "Salasanat eroavat."
     elif not password1:
-        return render_template("error.html", error="Lisää uusi salasana.")
+        error = "Lisää uusi salasana."
     elif len(password1) > 100:
-        return render_template("error.html", error="Uusi salasana on liian pitkä.")
+        error = "Uusi salasana on liian pitkä."
+    if error:
+        return render_template("error.html", error=error)
     if users.change_password(password, password1):
         return redirect("/")
     return render_template("error.html", error="Nykyinen salasana on väärä.")
@@ -98,24 +106,25 @@ def save_password():
 def propositions():
     admin = users.admin()
     number = hints.get_number_of_suggestions()
-    tuple = hints.get_new_suggestions()
+    elements = hints.get_new_suggestions()
     new_hints = []
-    for id, name, composer in tuple:
-        new_hints.append((name, composer, f"/page/new/{id}"))
+    for hint_id, name, composer in elements:
+        new_hints.append((name, composer, f"/page/new/{hint_id}"))
     number_new = hints.get_number_of_new()
-    tuple = hints.get_change_suggestions()
+    elements = hints.get_change_suggestions()
     change_hints = []
-    for id, name, composer in tuple:
-        change_hints.append((name, composer, f"/page/change/{id}"))
+    for hint_id, name, composer in elements:
+        change_hints.append((name, composer, f"/page/change/{hint_id}"))
     number_change = hints.get_number_of_changed()
-    tuple = hints.get_remove_suggestions()
+    elements = hints.get_remove_suggestions()
     remove_hints = []
-    for id, name, composer in tuple:
-        remove_hints.append((name, composer, f"/page/remove/{id}"))    
+    for hint_id, name, composer in elements:
+        remove_hints.append((name, composer, f"/page/remove/{hint_id}"))
     number_remove = hints.get_number_of_removed()
-    return render_template("propositions.html",
-            admin=admin, number=number, number_new=number_new, number_change=number_change, number_remove=number_remove,
-            new_hints=new_hints, change_hints=change_hints, remove_hints=remove_hints)
+    return render_template("propositions.html", admin=admin,
+                           number=number, number_new=number_new,
+                           number_change=number_change, number_remove=number_remove,
+                           new_hints=new_hints, change_hints=change_hints, remove_hints=remove_hints)
 
 @app.route("/page/new/<int:id>")
 def page_new(id):
@@ -126,11 +135,12 @@ def page_new(id):
     wed_styles = hints.get_new_styles(hint_id, 1)
     fun_places = hints.get_new_places(hint_id, 2)
     fun_styles = hints.get_new_styles(hint_id, 2)
-    return render_template("hint_new.html", 
-            hint_id=hint_id, admin=admin, name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
-            link1=hint.link1, link2=hint.link2, link3=hint.link3,
-            sent_at=hint.sent_at.strftime("%d.%m.%Y %H:%M"),
-            wed_places=wed_places, wed_styles=wed_styles, fun_places=fun_places, fun_styles=fun_styles)
+    return render_template("hint_new.html", hint_id=hint_id, admin=admin,
+                           name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
+                           link1=hint.link1, link2=hint.link2, link3=hint.link3,
+                           sent_at=hint.sent_at.strftime("%d.%m.%Y %H:%M"),
+                           wed_places=wed_places, wed_styles=wed_styles,
+                           fun_places=fun_places, fun_styles=fun_styles)
 
 @app.route("/page/change/<int:id>")
 def page_change(id):
@@ -139,14 +149,16 @@ def page_change(id):
     hint = hints.get_hint(hint_id)
     old_id = hints.get_previous_id(hint_id)
     current_hint = f"/page/{old_id}"
-    wed_places = hints.get_changed_places(hint_id, 1)    
+    wed_places = hints.get_changed_places(hint_id, 1)
     wed_styles = hints.get_changed_styles(hint_id, 1)
-    fun_places = hints.get_changed_places(hint_id, 2)    
+    fun_places = hints.get_changed_places(hint_id, 2)
     fun_styles = hints.get_changed_styles(hint_id, 2)
-    return render_template("hint_change.html", 
-            hint_id=hint_id, admin=admin, name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
-            link1=hint.link1, link2=hint.link2, link3=hint.link3, sent_at=hint.sent_at.strftime("%d.%m.%Y %H:%M"),
-            wed_places=wed_places, wed_styles=wed_styles, fun_places=fun_places, fun_styles=fun_styles, current_hint=current_hint)
+    return render_template("hint_change.html", hint_id=hint_id, admin=admin,
+                           name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
+                           link1=hint.link1, link2=hint.link2, link3=hint.link3,
+                           sent_at=hint.sent_at.strftime("%d.%m.%Y %H:%M"),
+                           wed_places=wed_places, wed_styles=wed_styles,
+                           fun_places=fun_places, fun_styles=fun_styles, current_hint=current_hint)
 
 @app.route("/page/remove/<int:id>")
 def page_remove(id):
@@ -158,10 +170,12 @@ def page_remove(id):
     wed_styles = hints.get_style_names(hint_id, 1)
     fun_places = hints.get_place_names(hint_id, 2)
     fun_styles = hints.get_style_names(hint_id, 2)
-    return render_template("hint_remove.html", 
-            hint_id=hint_id, admin=admin, name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
-            link1=hint.link1, link2=hint.link2, link3=hint.link3, sent_at=hint.sent_at.strftime("%d.%m.%Y %H:%M"),
-            wed_places=wed_places, wed_styles=wed_styles, fun_places=fun_places, fun_styles=fun_styles, reason=reason)
+    return render_template("hint_remove.html", hint_id=hint_id, admin=admin,
+                           name=hint.name, composer=hint.composer, alternatives=hint.alternatives,
+                           link1=hint.link1, link2=hint.link2, link3=hint.link3,
+                           sent_at=hint.sent_at.strftime("%d.%m.%Y %H:%M"),
+                           wed_places=wed_places, wed_styles=wed_styles,
+                           fun_places=fun_places, fun_styles=fun_styles, reason=reason)
 
 @app.route("/new")
 def new():
@@ -196,10 +210,11 @@ def confirm_new():
     if error:
         return render_template("error.html", error=error)
     return render_template("confirm_new.html",
-            composer=composer, name=name, alternatives=alternatives,
-            link1=link1, link2=link2, link3=link3,
-            wed_places=wed_places, wed_styles=wed_styles, fun_places=fun_places, fun_styles=fun_styles,
-            places1=places1, styles1=styles1, places2=places2, styles2=styles2)
+                           composer=composer, name=name, alternatives=alternatives,
+                           link1=link1, link2=link2, link3=link3,
+                           wed_places=wed_places, wed_styles=wed_styles,
+                           fun_places=fun_places, fun_styles=fun_styles,
+                           places1=places1, styles1=styles1, places2=places2, styles2=styles2)
 
 @app.route("/save_hint_suggestion", methods=["POST"])
 def save_hint_suggestion():
@@ -265,10 +280,11 @@ def change():
     fun_styles = ["" for i in range(4)]
     for selection in selected:
         fun_styles[selection[0]-1] = "checked"
-    return render_template("change.html",
-            hint_id=hint_id, composer=hint.composer, name=hint.name, alternatives=hint.alternatives,
-            link1=hint.link1, link2=hint.link2, link3=hint.link3,
-            wed_places=wed_places, wed_styles=wed_styles, fun_places=fun_places, fun_styles=fun_styles)
+    return render_template("change.html", hint_id=hint_id,
+                           composer=hint.composer, name=hint.name, alternatives=hint.alternatives,
+                           link1=hint.link1, link2=hint.link2, link3=hint.link3,
+                           wed_places=wed_places, wed_styles=wed_styles,
+                           fun_places=fun_places, fun_styles=fun_styles)
 
 @app.route("/confirm_change", methods=["POST"])
 def confirm_change():
@@ -299,11 +315,12 @@ def confirm_change():
     error = check_input(composer, name, alternatives, link1, link2, link3, places1, styles1, places2, styles2)
     if error:
         return render_template("error.html", error=error)
-    return render_template("confirm_change.html", 
-            hint_id=hint_id, composer=composer, name=name, alternatives=alternatives, 
-            link1=link1, link2=link2, link3=link3, 
-            wed_places=wed_places, wed_styles=wed_styles, fun_places=fun_places, fun_styles=fun_styles,
-            places1=places1, styles1=styles1, places2=places2, styles2=styles2)
+    return render_template("confirm_change.html", hint_id=hint_id,
+                           composer=composer, name=name, alternatives=alternatives,
+                           link1=link1, link2=link2, link3=link3,
+                           wed_places=wed_places, wed_styles=wed_styles,
+                           fun_places=fun_places, fun_styles=fun_styles,
+                           places1=places1, styles1=styles1, places2=places2, styles2=styles2)
 
 @app.route("/save_change_suggestion", methods=["POST"])
 def save_change_suggestion():
@@ -400,10 +417,10 @@ def reject_remove():
 @app.route("/result")
 def result():
     query = request.args["query"]
-    tuple = hints.search(query)
+    elements = hints.search(query)
     result = []
-    for id, name, composer in tuple:
-        result.append((name, composer, f"/page/{id}"))
+    for hint_id, name, composer in elements:
+        result.append((name, composer, f"/page/{hint_id}"))
     return render_template("result.html", result=result, query=query)
 
 @app.route("/customs")
@@ -415,10 +432,10 @@ def cancel():
     return redirect("/")
 @app.route("/wedding")
 def wedding():
-    tuple = hints.get_occasion_latest(1)
+    elements = hints.get_occasion_latest(1)
     weddings = []
-    for id, name, composer in tuple:
-        weddings.append((name, composer, f"/page/{id}"))
+    for hint_id, name, composer in elements:
+        weddings.append((name, composer, f"/page/{hint_id}"))
     return render_template("wedding.html", weddings=weddings)
 
 @app.route("/wedding_selected", methods=["POST"])
@@ -438,24 +455,25 @@ def wedding_selected():
         else:
             styles.append("")
     order = request.form["order"]
-    tuple, number = get_selected_hints(order, place_id, style_id, 1)
-    selected = [] 
+    elements, number = get_selected_hints(order, place_id, style_id, 1)
+    selected = []
     for i in range(6):
         if number == i:
             selected.append("selected")
         else:
             selected.append("")
     selected_hints = []
-    for id, name, composer in tuple:
-        selected_hints.append((name, composer, f"/page/{id}"))
-    return render_template("wedding_selected.html", places=places, styles=styles, selected_hints=selected_hints, selected=selected)
+    for hint_id, name, composer in elements:
+        selected_hints.append((name, composer, f"/page/{hint_id}"))
+    return render_template("wedding_selected.html", places=places, styles=styles,
+                           selected_hints=selected_hints, selected=selected)
 
 @app.route("/funeral")
 def funeral():
-    tuple = hints.get_occasion_latest(2)
+    elements = hints.get_occasion_latest(2)
     funerals = []
-    for id, name, composer in tuple:
-        funerals.append((name, composer, f"/page/{id}"))
+    for hint_id, name, composer in elements:
+        funerals.append((name, composer, f"/page/{hint_id}"))
     return render_template("funeral.html", funerals=funerals)
 
 @app.route("/funeral_selected", methods=["POST"])
@@ -475,115 +493,118 @@ def funeral_selected():
         else:
             styles.append("")
     order = request.form["order"]
-    tuple, number = get_selected_hints(order, place_id, style_id, 2)
-    selected = [] 
+    elements, number = get_selected_hints(order, place_id, style_id, 2)
+    selected = []
     for i in range(6):
         if number == i:
             selected.append("selected")
         else:
             selected.append("")
     funerals = []
-    for id, name, composer in tuple:
-        funerals.append((name, composer, f"/page/{id}"))
-    return render_template("funeral_selected.html", places=places, styles=styles, funerals=funerals, selected=selected)
+    for hint_id, name, composer in elements:
+        funerals.append((name, composer, f"/page/{hint_id}"))
+    return render_template("funeral_selected.html",
+                           places=places, styles=styles, funerals=funerals, selected=selected)
 
 def check_input(composer, name, alternatives, link1, link2, link3, places1, styles1, places2, styles2):
+    message = ""
     if not composer:
-        return "Lisää kappaleen esittäjä/säveltäjä."
+        message = "Lisää kappaleen esittäjä/säveltäjä."
     elif not name:
-        return "Lisää kappaleen nimi."
+        message = "Lisää kappaleen nimi."
     elif len(composer) > 100:
-        return "Säveltäjän/esittäjän nimi on liian pitkä."
+        message = "Säveltäjän/esittäjän nimi on liian pitkä."
     elif len(name) > 100:
-        return "Kappaleen nimi on liian pitkä."
+        message = "Kappaleen nimi on liian pitkä."
     elif len(alternatives) > 500:
-        return "Vaihtoehtoisissa tiedoissa on liikaa merkkejä."
+        message = "Vaihtoehtoisissa tiedoissa on liikaa merkkejä."
     elif len(link1) > 200 or len(link2) > 200 or len(link3) > 200:
-        return "Verkko-osoitteessa on liikaa merkkejä."
+        message = "Verkko-osoitteessa on liikaa merkkejä."
     elif not (places1 or styles1 or places2 or styles2):
-        return "Kappaleella ei ole kategorioita"
+        message = "Kappaleella ei ole kategorioita"
     elif (places1 and not styles1) or (styles1 and not places1):
-        return "Tarkista kappaleen kategoriat."
+        message = "Tarkista kappaleen kategoriat."
     elif (places2 and not styles2) or (styles2 and not places2):
-        return "Tarkista kappaleen kategoriat."
+        message = "Tarkista kappaleen kategoriat."
+    return message
 
 def get_selected_hints(order, place_id, style_id, occasion_id):
     if place_id == 0:
         if style_id == 0:
             if order == "latest":
                 number = 0
-                tuple = hints.get_occasion_latest(occasion_id)
+                elements = hints.get_occasion_latest(occasion_id)
             elif order == "oldest":
                 number = 1
-                tuple = hints.get_occasion_oldest(occasion_id)
+                elements = hints.get_occasion_oldest(occasion_id)
             elif order == "composer":
                 number = 2
-                tuple = hints.get_occasion_composer(occasion_id)
+                elements = hints.get_occasion_composer(occasion_id)
             elif order == "composer_rev":
                 number = 3
-                tuple = hints.get_occasion_composer_reversed(occasion_id)
+                elements = hints.get_occasion_composer_reversed(occasion_id)
             elif order == "name":
                 number = 4
-                tuple = hints.get_occasion_name(occasion_id)
+                elements = hints.get_occasion_name(occasion_id)
             elif order == "name_rev":
                 number = 5
-                tuple = hints.get_occasion_name_reversed(occasion_id)
+                elements = hints.get_occasion_name_reversed(occasion_id)
         else:
             if order == "latest":
                 number = 0
-                tuple = hints.get_style_latest(occasion_id, style_id)
+                elements = hints.get_style_latest(occasion_id, style_id)
             elif order == "oldest":
                 number = 1
-                tuple = hints.get_style_oldest(occasion_id, style_id)
+                elements = hints.get_style_oldest(occasion_id, style_id)
             elif order == "composer":
                 number = 2
-                tuple = hints.get_style_composer(occasion_id, style_id)
+                elements = hints.get_style_composer(occasion_id, style_id)
             elif order == "composer_rev":
                 number = 3
-                tuple = hints.get_style_composer_reversed(occasion_id, style_id)
+                elements = hints.get_style_composer_reversed(occasion_id, style_id)
             elif order == "name":
                 number = 4
-                tuple = hints.get_style_name(occasion_id, style_id)
+                elements = hints.get_style_name(occasion_id, style_id)
             elif order == "name_rev":
                 number = 5
-                tuple = hints.get_style_name_reversed(occasion_id, style_id)
+                elements = hints.get_style_name_reversed(occasion_id, style_id)
     else:
         if style_id == 0:
             if order == "latest":
                 number = 0
-                tuple = hints.get_place_latest(occasion_id, place_id)
+                elements = hints.get_place_latest(occasion_id, place_id)
             elif order == "oldest":
                 number = 1
-                tuple = hints.get_place_oldest(occasion_id, place_id)
+                elements = hints.get_place_oldest(occasion_id, place_id)
             elif order == "composer":
                 number = 2
-                tuple = hints.get_place_composer(occasion_id, place_id)
+                elements = hints.get_place_composer(occasion_id, place_id)
             elif order == "composer_rev":
                 number = 3
-                tuple = hints.get_place_composer_reversed(occasion_id, place_id)
+                elements = hints.get_place_composer_reversed(occasion_id, place_id)
             elif order == "name":
                 number = 4
-                tuple = hints.get_place_name(occasion_id, place_id)
+                elements = hints.get_place_name(occasion_id, place_id)
             elif order == "name_rev":
                 number = 5
-                tuple = hints.get_place_name_reversed(occasion_id, place_id)
+                elements = hints.get_place_name_reversed(occasion_id, place_id)
         else:
             if order == "latest":
                 number = 0
-                tuple = hints.get_place_style_latest(occasion_id, place_id, style_id)
+                elements = hints.get_place_style_latest(occasion_id, place_id, style_id)
             elif order == "oldest":
                 number = 1
-                tuple = hints.get_place_style_oldest(occasion_id, place_id, style_id)
+                elements = hints.get_place_style_oldest(occasion_id, place_id, style_id)
             elif order == "composer":
                 number = 2
-                tuple = hints.get_place_style_composer(occasion_id, place_id, style_id)
+                elements = hints.get_place_style_composer(occasion_id, place_id, style_id)
             elif order == "composer_rev":
                 number = 3
-                tuple = hints.get_place_style_composer_reversed(occasion_id, place_id, style_id)
+                elements = hints.get_place_style_composer_reversed(occasion_id, place_id, style_id)
             elif order == "name":
                 number = 4
-                tuple = hints.get_place_style_name(occasion_id, place_id, style_id)
+                elements = hints.get_place_style_name(occasion_id, place_id, style_id)
             elif order == "name_rev":
                 number = 5
-                tuple = hints.get_place_style_name_reversed(occasion_id, place_id, style_id)
-    return tuple, number
+                elements = hints.get_place_style_name_reversed(occasion_id, place_id, style_id)
+    return elements, number
