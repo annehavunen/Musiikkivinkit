@@ -261,15 +261,18 @@ def get_change_suggestions_by_id(hint_id):
     return suggestions
 
 def search(query):
-    sql = """SELECT H.name, H.composer, H.id
-            FROM Hint H, Categories C
-            WHERE H.id = C.hint_id
-            AND (LOWER(name) LIKE LOWER(:query)
-            OR LOWER(composer) LIKE LOWER(:query)
-            OR LOWER(alternatives) LIKE LOWER(:query))
-            GROUP BY H.id"""
-    result = db.session.execute(sql, {"query":"%"+query+"%"})
-    elements = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
+    if not query:
+        elements = []
+    else:
+        sql = """SELECT H.name, H.composer, H.id
+                FROM Hint H, Categories C
+                WHERE H.id = C.hint_id
+                AND (LOWER(name) LIKE LOWER(:query)
+                OR LOWER(composer) LIKE LOWER(:query)
+                OR LOWER(alternatives) LIKE LOWER(:query))
+                GROUP BY H.id"""
+        result = db.session.execute(sql, {"query":"%"+query+"%"})
+        elements = [(item["id"], item["name"], item["composer"]) for item in result.fetchall()]
     return elements
 
 def get_occasion_latest(occasion_id):
