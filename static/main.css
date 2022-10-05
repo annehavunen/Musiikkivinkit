@@ -53,9 +53,7 @@ body [style="white-space: pre-line"] {
 
 .profilesearch a {
   text-decoration: none;
-  color: black;
-  background: rgba(0, 128, 0, 0.3);
-  padding: 5px;
+  color: darkgreen;
 }
 
 .header a {
@@ -163,7 +161,7 @@ table th {
 }
 
 .tabplace input[type="radio"]:checked + label {
-  border: solid 2px black;
+  border: solid 1px darkgreen;
 }
 
 .tabstyle label {
@@ -177,5 +175,5 @@ table th {
 }
 
 .tabstyle input[type="radio"]:checked + label {
-  border: solid 2px black;
+  border: solid 1px darkgreen;
 }
