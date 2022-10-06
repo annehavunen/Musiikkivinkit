@@ -1,21 +1,23 @@
 {% extends "layout.html" %}
 {% block title %}Luo vinkki{% endblock %}
 {% block content %}
+{% if session.username %}
 
 <h3>Vahvista vielä musiikkivinkin lähetys.</h3>
-<p><b>Säveltäjän tai esittäjän nimi</b><br>
+<p><b>Säveltäjän tai esittäjän nimi:</b><br>
 {{ composer }}</p>
-<p><b>Kappaleen nimi</b><br>
+<p><b>Kappaleen nimi:</b><br>
 {{ name }}</p>
 
 <b>Vaihtoehtoiset kutsumanimet, esittäjät ym.:</b>
 <p style="white-space: pre-line">{{ alternatives }}</p>
 
-<p><b>Verkko-osoitteet</b><br>
+<p><b>Verkko-osoitteet:</b><br>
 {{ link1 }}<br>
 {{ link2 }}<br>
 {{ link3 }}</p>
-<p>Liitetty seuraaviin kategorioihin:<br>
+
+<p><b>Liitetty seuraaviin kategorioihin:</b><br>
 <b>Vihkiminen</b><br>
 Musiikin paikka tilaisuudessa:<br>
 <ul>
@@ -28,7 +30,7 @@ Musiikkityyli:<br>
   {% for style in wed_styles %}
   <li>{{ style[0] }}<br>
   {% endfor %}
-  </ul>
+</ul>
 <b>Hautaan siunaaminen</b><br>
 Musiikin paikka tilaisuudessa:<br>
 <ul>
@@ -61,4 +63,5 @@ Musiikkityyli:<br>
   <input type="submit" value="Peruuta">
 </form>
 
+{% endif %}
 {% endblock %}
