@@ -1,5 +1,6 @@
 from flask import render_template, redirect, request
 from app import app
+import string
 import hints, users
 
 
@@ -30,7 +31,8 @@ def logout():
 
 @app.route("/registerpage")
 def registerpage():
-    return render_template("registerpage.html")
+    error = ""
+    return render_template("registerpage.html", error=error)
 
 @app.route("/register", methods=["POST"])
 def register():
@@ -42,12 +44,16 @@ def register():
         error = "Lisää käyttäjätunnus."
     elif len(username) > 50:
         error = "Käyttäjätunnus on liian pitkä."
+    elif username[0] == " " or username[len(username)-1] == " ":
+        error = "Käyttäjätunnus ei saa alkaa eikä päättyä välilyönnillä."
     elif password1 != password2:
         error = "Salasanat eroavat."
     elif not password1:
         error = "Lisää salasana."
     elif len(password1) > 100:
         error = "Salasana on liian pitkä."
+    elif not accept_password(password1):
+        error = "Salasana ei täytä kriteerejä."
     if error:
         return render_template("error.html", error=error)
     if users.register(username, password1):
@@ -96,6 +102,8 @@ def save_password():
         error = "Lisää uusi salasana."
     elif len(password1) > 100:
         error = "Uusi salasana on liian pitkä."
+    elif not accept_password(password1):
+        error = "Uusi salasana ei täytä kriteerejä."
     if error:
         return render_template("error.html", error=error)
     if users.change_password(password, password1):
@@ -380,11 +388,10 @@ def confirm_remove():
         return render_template("error.html", error="Lisää perustelu vinkin poistamiselle.")
     elif len(reason) > 1000:
         return render_template("error.html", error="Poistamisen perustelu on liian pitkä.")
-    else:
-        hint_id = request.form["hint_id"]
-        composer = request.form["composer"]
-        name = request.form["name"]
-        return render_template("confirm_remove.html", hint_id=hint_id, reason=reason, composer=composer, name=name)
+    hint_id = request.form["hint_id"]
+    composer = request.form["composer"]
+    name = request.form["name"]
+    return render_template("confirm_remove.html", hint_id=hint_id, reason=reason, composer=composer, name=name)
 
 @app.route("/save_remove_suggestion", methods=["POST"])
 def save_remove_suggestion():
@@ -505,6 +512,24 @@ def funeral_selected():
         funerals.append((name, composer, f"/page/{hint_id}"))
     return render_template("funeral_selected.html",
                            places=places, styles=styles, funerals=funerals, selected=selected)
+
+def accept_password(password):
+    lowercase = string.ascii_lowercase + "åäö"
+    uppercase = string.ascii_uppercase + "ÅÄÖ"
+    lower, upper, punctuation, number = 0, 0, 0, 0
+    if (len(password) >= 8):
+        for char in password:
+            if (char in lowercase):
+                lower+=1           
+            if (char in uppercase):
+                upper+=1          
+            if (char in string.digits):
+                number+=1           
+            if(char in string.punctuation):
+                punctuation+=1
+    if (lower>=1 and upper>=1 and number>=1 and punctuation>=1 and lower+upper+punctuation+number==len(password)):
+        return True
+    return False
 
 def check_input(composer, name, alternatives, link1, link2, link3, places1, styles1, places2, styles2):
     message = ""

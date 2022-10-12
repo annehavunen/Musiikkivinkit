@@ -6,7 +6,14 @@
 <p style="color:red;">{{ error }}</p>
 <form name="form" action="/register" method="POST" onsubmit="return check()">
   Tunnus: <input type="text" name="username">
-  <p>
+  <p style="border-width:1px; border-style:solid; border-color:green; background: rgba(0, 128, 0, 0.1); padding: 1em; width: fit-content; font-size: smaller;">
+    Salasanan tulee sisältää vähintään:<br>
+    - kahdeksan merkkiä<br>
+    - yksi pieni kirjain [a-ö]<br>
+    - yksi iso kirjain [A-Ö]<br>
+    - yksi numero välillä [0-9]<br>
+    - yksi erikoismerkki
+  </p>
   Salasana: <input type="password" name="password1"><br>
   Salasana uudestaan: <input type="password" name="password2"><br>
   <input type="submit" value="Luo tunnus"></p>
@@ -18,8 +25,13 @@
       alert("Lisää käyttäjätunnus.");
       return false;
     }
-    if (document.forms["form"]["username"].value.length > 50) {
+    username_length = document.forms["form"]["username"].value.length
+    if (username_length > 50) {
       alert("Käyttäjätunnus on liian pitkä.");
+      return false;
+    }
+    if (document.forms["form"]["username"].value[0] == " " || document.forms["form"]["username"].value[username_length-1] == " ") {
+      alert("Käyttäjätunnus ei saa alkaa eikä päättyä välilyönnillä.")
       return false;
     }
     if (document.forms["form"]["password1"].value != document.forms["form"]["password2"].value) {
