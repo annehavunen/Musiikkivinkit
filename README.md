@@ -25,12 +25,6 @@ Musiikkivinkkejä voi selata ilman kirjautumista.
 - tehdä edellä mainitut
 - hyväksyä tai hylätä ehdotetut vinkit, muutokset tai poistot
 
-## Sovelluksen suunnitteilla olevia ominaisuuksia
-
-- salasanalle on tarkemmat kriteerit
-- ulkoasun parantamista
-  - erityisesti yksittäisten musiikkivinkkien ulkoasun selkeyttämistä
-
 ## Sovelluksen testaaminen Herokussa
 
 - sovellusta voi testata [Herokussa](https://musiikkivinkit.herokuapp.com)
