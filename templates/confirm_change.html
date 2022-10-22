@@ -18,6 +18,7 @@
 <a href={{ link3 }}>{{ link3 }}</a></p>
 
 <p><b>Liitetty seuraaviin kategorioihin:</b><br>
+{% if wed_places %}
 <b>Vihkiminen</b><br>
 Musiikin paikka tilaisuudessa:<br>
 <ul>
@@ -31,6 +32,9 @@ Musiikkityyli:<br>
   <li>{{ style[0] }}<br>
   {% endfor %}
 </ul>
+{% endif %}
+
+{% if fun_places %}
 <b>Hautaan siunaaminen</b><br>
 Musiikin paikka tilaisuudessa:<br>
 <ul>
@@ -44,6 +48,7 @@ Musiikkityyli:<br>
   <li>{{ style[0] }}<br>
   {% endfor %}</p>
 </ul>
+{% endif %}
 
 <form action="/save_change_suggestion" method="POST">
   <input type="hidden" name="composer" value='{{ composer }}'>

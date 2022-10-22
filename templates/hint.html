@@ -14,6 +14,7 @@
 <a href={{ link3 }}>{{ link3 }}</a></p>
 
 Liitetty seuraaviin kategorioihin:<br>
+{% if wed_places %}
 <b>Vihkiminen</b><br>
 Musiikin paikka tilaisuudessa:<br>
 <ul>
@@ -27,7 +28,9 @@ Musiikkityyli:<br>
   <li>{{ style[0] }}<br>
   {% endfor %}
 </ul>
+{% endif %}
 
+{% if fun_places %}
 <b>Hautaan siunaaminen</b><br>
 Musiikin paikka tilaisuudessa:<br>
 <ul>
@@ -41,6 +44,8 @@ Musiikkityyli:<br>
   <li>{{ style[0] }}<br>
   {% endfor %}
 </ul>
+{% endif %}
+
 <p>Vinkkiä on muokattu viimeksi {{ sent_at }}.</p>
 
 <form action="/change" method="POST">
