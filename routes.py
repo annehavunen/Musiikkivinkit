@@ -14,15 +14,17 @@ def index():
 
 @app.route("/loginpage")
 def loginpage():
-    return render_template("loginpage.html")
+    error = ""
+    return render_template("loginpage.html", error=error)
 
 @app.route("/login", methods=["POST"])
 def login():
+    error = ""
     username = request.form["username"]
     password = request.form["password"]
     if users.login(username, password):
         return redirect("/")
-    return render_template("error.html", error="Väärä tunnus tai salasana")
+    return render_template("loginpage.html", error="Väärä tunnus tai salasana")
 
 @app.route("/logout")
 def logout():
@@ -55,7 +57,7 @@ def register():
     elif not accept_password(password1):
         error = "Salasana ei täytä kriteerejä."
     if error:
-        return render_template("error.html", error=error)
+        return render_template("registerpage.html", error=error)
     if users.register(username, password1):
         return redirect("/")
     return render_template("registerpage.html", error="Käyttäjätunnus on jo käytössä.")
@@ -85,7 +87,8 @@ def profile():
 def change_password():
     admin = users.admin()
     number = hints.get_number_of_suggestions()
-    return render_template("change_password.html", admin=admin, number=number)
+    error = ""
+    return render_template("change_password.html", admin=admin, number=number, error=error)
 
 @app.route("/save_password", methods=["POST"])
 def save_password():
@@ -105,10 +108,10 @@ def save_password():
     elif not accept_password(password1):
         error = "Uusi salasana ei täytä kriteerejä."
     if error:
-        return render_template("error.html", error=error)
+        return render_template("change_password.html", error=error)
     if users.change_password(password, password1):
         return redirect("/")
-    return render_template("error.html", error="Nykyinen salasana on väärä.")
+    return render_template("change_password.html", error="Nykyinen salasana on väärä.")
 
 @app.route("/propositions")
 def propositions():
