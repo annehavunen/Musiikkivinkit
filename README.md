@@ -25,9 +25,3 @@ Musiikkivinkkejä voi selata ilman kirjautumista.
 - tehdä edellä mainitut
 - hyväksyä tai hylätä ehdotetut vinkit, muutokset tai poistot
 
-## Sovelluksen testaaminen Herokussa
-
-- sovellusta voi testata [Herokussa](https://musiikkivinkit.herokuapp.com)
-- vinkkiehdotusten hyväksyminen tai hylkääminen vaatii ylläpitäjän oikeudet. Testataksesi ominaisuuksia syötä kirjautuessa (ei-niin-salaisesti):
-  - Tunnus: ylläpitäjä
-  - Salasana: ylläpito
